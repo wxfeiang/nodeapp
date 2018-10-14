@@ -1,0 +1,21 @@
+{
+  "name": "nodeuser",
+  "version": "1.0.0",
+  "description": "\"\"\u001b[Duser \u001b[C\"",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "王鹏",
+  "license": "ISC",
+  "devDependencies": {
+    "express": "^4.16.4",
+    "method-override": "^3.0.0"
+  },
+  "dependencies": {
+    "connect-flash": "^0.1.1",
+    "express-handlebars": "^3.0.0",
+    "express-session": "^1.15.6",
+    "mongoose": "^5.3.3"
+  }
+}
