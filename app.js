@@ -33,8 +33,6 @@ mongoose.connect("mongodb://localhost/node-app",{useNewUrlParser:true})
   .catch(err => {
     console.log(err+"链接失败");
   });
-
-
  // 引入模型
  require("./models/Idea") 
 
@@ -50,8 +48,6 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 //  使用静态文件  当前文件下
 app.use(express.static(path.join(__dirname,"public")));
-
-
 // override with POST having ?_method=DELETE  实例化 使用
 app.use(methodOverride('_method'))
 
@@ -66,12 +62,11 @@ app.use(session({
  // 配置全局变量  让其他得文件都可以使用
  app.use((req,res,next)=>{
    // 操作提示信息
-   res.locals.success_msg= req.flash('success_msg');
-   res.locals.error= req.flash('error');
+   res.locals.success_msg = req.flash('success_msg');
+   res.locals.error_msg   = req.flash('error_msg');
    next();
 
  })
-
 
 //配置路由  可以用 ES6
 app.get("/", function(req, res) {

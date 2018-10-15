@@ -14,3 +14,11 @@
 
 
 ###  代码优化分离
+
+###  密码加密 
+* bcrypt-nodejs
+
+` bcrypt.hash(newUser.password, null, null, function (err, hash) {
+            if (err) throw err;
+            // 密码加密
+            newUser.password = hash;)}`

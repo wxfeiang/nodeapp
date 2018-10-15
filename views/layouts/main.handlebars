@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>用户管理</title>
+    <title>node.js 简单用户管理系统</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
@@ -16,6 +16,8 @@
     <div class="container">
         {{!-- 信息提示 --}}
          {{> _msg}}
+         {{!-- 错误信息 --}}
+          {{> _errors}}
           {{!-- 主体展示 --}} 
           {{{body}}}
     </div>

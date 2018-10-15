@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 // 实例化路由
 const router = express.Router()
-
 // 解析数据
 const jsonParser = bodyParser.json();
 // create application/x-www-form-urlencoded parser
