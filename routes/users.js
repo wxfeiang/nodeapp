@@ -38,9 +38,9 @@ router.post("/login", urlencodedParser,function (req, res) {
     //   }
     // })
     // 匹配密码
-    bcrypt.compare("req.body.password", user.password, (err, res)=>{
+    bcrypt.compare("req.body.password", user.password, (err, result)=>{
       if (err) throw err;
-      if(res){
+      if(!result){
         req.flash("success_msg", "登录成功");
         res.redirect("/ideas");
         console.log(req.body.password);
