@@ -14,25 +14,35 @@ const methodOverride = require('method-override')
 // 引入 express-session 
 const session = require('express-session')
 // 引入 flash
-const flash = require('connect-flash');
+const flash = require('connect-flash')
+//引入 passport 
+const passport = require("passport")
 // 引入静态资源路径
 const path = require('path')
 
 // 实例化对象
 const app = express();
 // 引入路由
-const ideas = require('./routes/ideas')
-const users = require('./routes/users')
+const ideas = require('./routes/ideas');
+const users = require('./routes/users');
+// 引入配置文件
+require('./config/passport')(passport);
 
+//  引入 database
+const db = require("./config/database")
 
-// 链接数据库  端口 库名
-mongoose.connect("mongodb://localhost/node-app",{useNewUrlParser:true})
+// 链接数据库  端口 库名  本地  远程数据库
+mongoose.connect(db.mongoURL,{useNewUrlParser:true})
   .then(() => {
     console.log("链接成功");
   })
   .catch(err => {
     console.log(err+"链接失败");
   });
+
+
+
+  
  // 引入模型
  require("./models/Idea") 
 
@@ -58,16 +68,24 @@ app.use(session({
   saveUninitialized: true,
  // cookie: { secure: true }
 }))
+//  注意
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+// 配置 序列化  反序列化
+
  app.use(flash())
  // 配置全局变量  让其他得文件都可以使用
  app.use((req,res,next)=>{
    // 操作提示信息
    res.locals.success_msg = req.flash('success_msg');
    res.locals.error_msg   = req.flash('error_msg');
+   res.locals.error   = req.flash('error');
+   res.locals.user   = req.user || null;
    next();
-
  })
-
+//  app.use(passport.initialize());
 //配置路由  可以用 ES6
 app.get("/", function(req, res) {
   // res.send("Index")
@@ -84,8 +102,8 @@ app.get("/about", function(req, res) {
 //使用路由组件
 app.use("/ideas",ideas )
 app.use("/users",users)
-
-const port = 8888;
+//  服务器自己的端口
+const port = process.env.PORT||8888;
 
 // 监听服务器端口号
 app.listen(port, () => {

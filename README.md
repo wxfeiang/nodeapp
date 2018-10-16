@@ -22,3 +22,9 @@
             if (err) throw err;
             // 密码加密
             newUser.password = hash;)}`
+
+
+##  导航守卫
+
+## 生产环境 运行   package
+

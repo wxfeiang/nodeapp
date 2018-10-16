@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const bcrypt = require('bcrypt-nodejs');
 const router = express.Router()
+const passport = require('passport')
 
 // 解析数据res
 // create application/x-www-form-urlencoded parser
@@ -20,39 +21,38 @@ router.get("/register", function (req, res) {
   res.render("users/register");
 });
 // 登录
-router.post("/login", urlencodedParser,function (req, res) {
- //console.log(req.body)
- //  拿到数据  查询数据库 两次匹配
- User.findOne({ email: req.body.email, })
-  .then((user)=>{
-    if(!user){
-      req.flash("error_msg", "用户不存在");
-      res.redirect("/users/login");
-      return ;
-    }
+router.post("/login", urlencodedParser, (req, res,next)=> {
+  // passport  登录验证
+  passport.authenticate('local', { 
+    successRedirect: '/ideas',
+    failureRedirect: '/users/login',
+    failureFlash: true,
+  })(req, res,next);
 
-    // bcrypt.compare("req.body.password", user.password, (err, result)=>{
-    //   if (err) throw err;
-    //   if(result){
 
-    //   }
-    // })
-    // 匹配密码
-    bcrypt.compare("req.body.password", user.password, (err, result)=>{
-      if (err) throw err;
-      if(!result){
-        req.flash("success_msg", "登录成功");
-        res.redirect("/ideas");
-        console.log(req.body.password);
-        console.log(user.password);
-      }else{
-        req.flash("error_msg", "密码不正确");
+  //console.log(req.body)
+  //  拿到数据  查询数据库 两次匹配
+ /*  User.findOne({ email: req.body.email, })
+    .then((user) => {
+      if (!user) {
+        req.flash("error_msg", "用户不存在");
         res.redirect("/users/login");
+        return;
       }
-    });
-      
 
-  })
+      bcrypt.compare(req.body.password, user.password, (err, isMatch) => {
+        if (err) throw err;
+
+        if (isMatch) {
+          req.flash("success_msg", "登录成功!");
+          res.redirect("/ideas");
+        } else {
+          req.flash("error_msg", "密码错误!");
+          res.redirect("/users/login");
+        }
+      });
+
+    }) */
 
 
 });
@@ -134,5 +134,12 @@ router.post("/register", urlencodedParser, function (req, res) {
   }
 
 });
+
+// 退出
+router.get("/logout",(req,res)=>{
+  req.logout();
+  req.flash("success_msg","退出成功了");
+  res.redirect("/users/login")
+})
 
 module.exports = router;
